@@ -1,19 +1,19 @@
-
 data "aws_ami" "amzn_linux" {
   most_recent = true
+  owners      = ["amazon"]
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["amzn-ami-*-x86_64-gp2"]
   }
 
   filter {
-    name = "virtualization-type"
+    name   = "virtualization-type"
     values = ["hvm"]
   }
 
   filter {
-    name = "owner-alias"
+    name   = "owner-alias"
     values = ["amazon"]
   }
 }
@@ -24,13 +24,13 @@ data "aws_ami" "amzn_linux" {
 resource "aws_security_group" "usg_vpn_sg" {
   name        = "usg-vpn-sg"
   description = "Allow ssh, icmp, syslog"
-  vpc_id = "${aws_vpc.usg_dev.id}"
+  vpc_id      = aws_vpc.usg_dev.id
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.usg_cidr}"]
+    cidr_blocks = [var.usg_cidr]
   }
 
   ingress {
@@ -44,7 +44,7 @@ resource "aws_security_group" "usg_vpn_sg" {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks  = ["${var.usg_cidr}"]
+    cidr_blocks = [var.usg_cidr]
   }
 
   ingress {
@@ -55,21 +55,20 @@ resource "aws_security_group" "usg_vpn_sg" {
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
-    Name = "${var.env}"
+    Name = var.env
   }
 }
 
 data "template_file" "user_data" {
-  template = "${file("ec2-userdata.tpl")}"
+  template = file("ec2-userdata.tpl")
 }
-
 
 /*
 Instantiate ec2instance with
@@ -82,19 +81,19 @@ Instantiate ec2instance with
 	- configuration is under /etc/awslogs/awslogs.conf	
 */
 resource "aws_instance" "syslog" {
-  ami           = "${data.aws_ami.amzn_linux.id}"
+  ami           = data.aws_ami.amzn_linux.id
   instance_type = "t2.micro"
   key_name      = "siem-kp"
-  private_ip    = "${var.syslog_ip}"
-  subnet_id     = "${aws_subnet.sn1.id}"
+  private_ip    = var.syslog_ip
+  subnet_id     = aws_subnet.sn1.id
 
-  vpc_security_group_ids = [ "${aws_security_group.usg_vpn_sg.id}" ]
-  iam_instance_profile   = "${aws_iam_instance_profile.siem_instance_profile.id}"
+  vpc_security_group_ids = [aws_security_group.usg_vpn_sg.id]
+  iam_instance_profile   = aws_iam_instance_profile.siem_instance_profile.id
 
-  user_data = "${data.template_file.user_data.rendered}"
+  user_data = data.template_file.user_data.rendered
 
   tags = {
-    Name = "${var.env}"
+    Name = var.env
   }
 }
 
