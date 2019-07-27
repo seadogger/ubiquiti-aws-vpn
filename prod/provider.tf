@@ -1,12 +1,10 @@
 provider "aws" {
-  region     = "ap-southeast-2"
+  region     = var.aws_region
   access_key = var.prod_access_key
   secret_key = var.prod_secret_key
 }
 
-provider "template" {
-}
+provider "template" {}
 
-provider "null" {
-}
+provider "null" {}
 

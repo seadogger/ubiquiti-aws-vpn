@@ -1,16 +1,3 @@
-
-# Critical info
-# How to configure AWS VPN on EdgeOS https://medium.com/@silasthomas/aws-vpc-ipsec-site-to-site-vpn-using-a-ubiquiti-edgemax-edgerouter-with-bgp-routing-37abafb950f3 
-# To enable bash based configuration as per https://community.ubnt.com/t5/EdgeRouter/Why-are-support-articles-password-protected-now/m-p/2254283#M198274 
-# SSH key generation as per https://help.ubnt.com/hc/en-us/articles/235247068-UniFi-Adding-SSH-Keys-to-UniFi-Devices#2 
-
-# General info
-# Using templates in tf - https://dzone.com/articles/using-templates-in-terraform 
-# Good example on using EdgeOS commands https://community.ubnt.com/t5/EdgeRouter/EdgeOS-CLI-Primer-part-1/td-p/285388
-
-
-ssh -i ${usg_priv_key_path} ${usg_admin_user}@${usg_ip} << EOF
-
 source /opt/vyatta/etc/functions/script-template
 configure
 
@@ -71,5 +58,3 @@ set system syslog host ${syslog_ip} facility all level warning
 commit
 save
 exit
-EOF
-

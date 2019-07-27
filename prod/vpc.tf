@@ -10,7 +10,7 @@ resource "aws_vpc" "usg_dev" {
 resource "aws_subnet" "sn1" {
   vpc_id            = aws_vpc.usg_dev.id
   cidr_block        = var.sn1_cidr
-  availability_zone = "ap-southeast-2a"
+  availability_zone = var.aws_availability_zone
 
   tags = {
     Name = "${var.env}-private"
@@ -20,7 +20,7 @@ resource "aws_subnet" "sn1" {
 resource "aws_subnet" "sn2" {
   vpc_id            = aws_vpc.usg_dev.id
   cidr_block        = var.sn2_cidr
-  availability_zone = "ap-southeast-2b"
+  availability_zone = var.aws_availability_zone
 
   tags = {
     Name = "${var.env}-private"
@@ -133,14 +133,3 @@ resource "aws_route" "r" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
-
-/*
-resource "aws_vpc_endpoint" "cwlogs" {
-  vpc_id            = "${aws_vpc.usg_dev.id}"
-  service_name      = "com.amazonaws.ap-southeast-2.logs"
-  vpc_endpoint_type = "Interface"
-
-  subnet_ids        = ["${aws_subnet.sn1.id}", "${aws_subnet.sn2.id}"]
-  private_dns_enabled = true
-}
-*/

@@ -24,8 +24,23 @@ data "template_file" "usg_vpn_installer" {
 }
 
 resource "null_resource" "install" {
-  provisioner "local-exec" {
-    command = "cat > ./gen/usg-vpn-install.sh <<EOL\n${data.template_file.usg_vpn_installer.rendered}\nEOL"
+  connection {
+     type        = "ssh"
+     host        = var.usg_ip
+     user        = var.usg_admin_user
+     private_key = file(var.usg_priv_key_path)
+     agent       = false
+  } 
+
+  provisioner "file" {
+    content     = "${data.template_file.usg_vpn_installer.rendered}"
+    destination = "/tmp/usg-vpn-installer.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod 755 /tmp/usg-vpn-installer.sh"
+    ]
   }
 }
 
@@ -40,8 +55,22 @@ data "template_file" "usg_vpn_uninstaller" {
 }
 
 resource "null_resource" "uninstall" {
-  provisioner "local-exec" {
-    command = "cat > ./gen/usg-vpn-uninstall.sh <<EOL\n${data.template_file.usg_vpn_uninstaller.rendered}\nEOL"
+ connection {
+     type        = "ssh"
+     host        = var.usg_ip
+     user        = var.usg_admin_user
+     private_key = file(var.usg_priv_key_path)
+     agent       = false
+  } 
+
+  provisioner "file" {
+    content     = "${data.template_file.usg_vpn_uninstaller.rendered}"
+    destination = "/tmp/usg-vpn-uninstaller.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod 755 /tmp/usg-vpn-uninstaller.sh"
+    ]
   }
 }
-

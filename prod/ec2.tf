@@ -74,7 +74,7 @@ data "template_file" "user_data" {
 Instantiate ec2instance with
 - Update of rpms
 	- yum update
-- Set region to ap-southeast-2
+- Set region
 - Remote syslog listening on UDP 514.
 	- syslog user data as per https://access.redhat.com/solutions/54363 
 - Cloudwatch agent using default configuration /var/log/messages to logstream of instanceid:
@@ -83,7 +83,9 @@ Instantiate ec2instance with
 resource "aws_instance" "syslog" {
   ami           = data.aws_ami.amzn_linux.id
   instance_type = "t2.micro"
+/*
   key_name      = "siem-kp"
+*/
   private_ip    = var.syslog_ip
   subnet_id     = aws_subnet.sn1.id
 
@@ -96,4 +98,3 @@ resource "aws_instance" "syslog" {
     Name = var.env
   }
 }
-
