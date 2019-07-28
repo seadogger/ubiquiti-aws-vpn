@@ -54,7 +54,8 @@ $ terraform apply
 ```
 and magic should happen.
 
-## [Architecture Diagram](https://github.com/seadogger/ubiquiti-aws-vpn/blob/master/Architecture%20Diagram.png)
+## Architecture Diagram
+![Architecture Diagram](https://github.com/seadogger/ubiquiti-aws-vpn/blob/master/Architecture%20Diagram.png)
 
 ## Future Work
 
