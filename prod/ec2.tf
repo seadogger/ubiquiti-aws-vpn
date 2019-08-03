@@ -67,14 +67,19 @@ resource "aws_security_group" "usg_vpn_sg" {
 }
 
 /*
+resource "aws_key_pair" "vm-key" {
+  key_name   = var.vm-key-name 
+  public_key = var.prod_access_key
+}
+*/
+
+/*
 Instantiate ec2instance with
 */
 resource "aws_instance" "monocleCam" {
   ami           = data.aws_ami.amzn_linux.id
   instance_type = "t2.micro"
-/*
-  key_name      = "siem-kp"
-*/
+  key_name      = var.vm-key-name
   private_ip    = var.monocle_cam_ip
   subnet_id     = aws_subnet.sn1.id
 

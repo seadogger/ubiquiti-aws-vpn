@@ -8,6 +8,7 @@ variable "usg_admin_user" {}
 variable "usg_ip" {}
 
 # aws prod account
+variable "vm-key-name" {}
 variable "prod_access_key" {}
 variable "prod_secret_key" {}
 
