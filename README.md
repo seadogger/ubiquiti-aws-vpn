@@ -59,6 +59,7 @@ and magic should happen.
 
 ## Future Work
 
+* Configure the VPC instances so they can see internet for updates but using the home lab gateway instead of AWS internet gateway
 * [Align the generated shell scripts to Ubiquiti commands](https://help.ubnt.com/hc/en-us/articles/115016128008-EdgeRouter-IPsec-Route-Based-Site-to-Site-VPN-to-AWS-VPC-BGP-over-IKEv1-IPsec-) rather than AWS Vyatta config.
 * Replace template generation with Terraform provisioner for USG using an API.
 

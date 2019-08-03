@@ -17,14 +17,6 @@ resource "aws_subnet" "sn1" {
   }
 }
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.usg_dev.id
-
-  tags = {
-    Name = var.env
-  }
-}
-
 resource "aws_vpn_gateway" "vpn_gateway" {
   vpc_id          = aws_vpc.usg_dev.id
   amazon_side_asn = var.aws_bgp_asn
@@ -32,12 +24,6 @@ resource "aws_vpn_gateway" "vpn_gateway" {
   tags = {
     Name = var.env
   }
-}
-
-resource "aws_route" "r" {
-  route_table_id         = aws_vpc.usg_dev.main_route_table_id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw.id
 }
 
 resource "aws_customer_gateway" "customer_gateway" {
