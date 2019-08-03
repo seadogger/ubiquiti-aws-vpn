@@ -66,35 +66,22 @@ resource "aws_security_group" "usg_vpn_sg" {
   }
 }
 
-data "template_file" "user_data" {
-  template = file("ec2-userdata.tpl")
-}
-
 /*
 Instantiate ec2instance with
-- Update of rpms
-	- yum update
-- Set region
-- Remote syslog listening on UDP 514.
-	- syslog user data as per https://access.redhat.com/solutions/54363 
-- Cloudwatch agent using default configuration /var/log/messages to logstream of instanceid:
-	- configuration is under /etc/awslogs/awslogs.conf	
 */
-resource "aws_instance" "syslog" {
+resource "aws_instance" "monocleCam" {
   ami           = data.aws_ami.amzn_linux.id
   instance_type = "t2.micro"
 /*
   key_name      = "siem-kp"
 */
-  private_ip    = var.syslog_ip
+  private_ip    = var.monocle_cam_ip
   subnet_id     = aws_subnet.sn1.id
 
   vpc_security_group_ids = [aws_security_group.usg_vpn_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.siem_instance_profile.id
 
-  user_data = data.template_file.user_data.rendered
-
   tags = {
-    Name = var.env
+    Name = "Monocle_Cam_Server"
   }
 }

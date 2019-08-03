@@ -27,11 +27,9 @@ variable "aws_region" {}
 variable "aws_availability_zone" {}
 variable "vpc_cidr" {}
 variable "sn1_cidr" {}
-variable "sn2_cidr" {}
-variable "pub_sn_cidr" {}
 variable "aws_bgp_asn" {}
 variable "usg_bgp_asn" {}
 variable "wan_ip" {}
 variable "usg_cidr" {}
 variable "env" {}
-variable "syslog_ip" {}
+variable "monocle_cam_ip" {}
